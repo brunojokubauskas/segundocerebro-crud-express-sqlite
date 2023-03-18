@@ -1,3 +1,4 @@
+const { query } = require('express');
 const knex = require('../database/knex');
 
 class NotesController {
@@ -57,6 +58,16 @@ class NotesController {
     const { id } = request.params;
     await knex("notes").where({id}).delete();
     return response.json();
+  } 
+
+  async index(request, response){
+    //Vai ser responsável por listar... 
+    const {user_id} = request.query;
+    const notes = await knex('notes')
+    .where({user_id})
+    .orderBy("title") 
+
+    return response.json(notes);
   }
 }
 
